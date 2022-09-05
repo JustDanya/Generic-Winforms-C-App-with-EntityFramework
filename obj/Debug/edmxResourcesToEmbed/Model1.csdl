@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PM01Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Attachments">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="File_name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Tech_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Tech" Relationship="Self.FK__Attachmen__Tech___3D5E1FD2" FromRole="Attachments" ToRole="Tech" />
+  </EntityType>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Tabel_number" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FIO" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Unit_ID" Type="Int32" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="EmployeeStatus" Relationship="Self.FK__Employees__Statu__300424B4" FromRole="Employees" ToRole="EmployeeStatus" />
+    <NavigationProperty Name="Units" Relationship="Self.FK__Employees__Unit___2F10007B" FromRole="Employees" ToRole="Units" />
+    <NavigationProperty Name="Tech" Relationship="Self.FK__Tech__Employee_I__3A81B327" FromRole="Employees" ToRole="Tech" />
+    <NavigationProperty Name="UnitLeaders" Relationship="Self.FK__UnitLeade__Leade__32E0915F" FromRole="Employees" ToRole="UnitLeaders" />
+  </EntityType>
+  <EntityType Name="EmployeeStatus">
+    <Key>
+      <PropertyRef Name="STATUS" />
+    </Key>
+    <Property Name="STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK__Employees__Statu__300424B4" FromRole="EmployeeStatus" ToRole="Employees" />
+  </EntityType>
+  <EntityType Name="Tech">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Serial" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Employee_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Attachments" Relationship="Self.FK__Attachmen__Tech___3D5E1FD2" FromRole="Tech" ToRole="Attachments" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK__Tech__Employee_I__3A81B327" FromRole="Tech" ToRole="Employees" />
+  </EntityType>
+  <EntityType Name="UnitLeaders">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Leader" Type="Int32" />
+    <Property Name="Unit" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK__UnitLeade__Leade__32E0915F" FromRole="UnitLeaders" ToRole="Employees" />
+    <NavigationProperty Name="Units" Relationship="Self.FK__UnitLeader__Unit__33D4B598" FromRole="UnitLeaders" ToRole="Units" />
+  </EntityType>
+  <EntityType Name="Units">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Unit_name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="EmployeesCount" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK__Employees__Unit___2F10007B" FromRole="Units" ToRole="Employees" />
+    <NavigationProperty Name="UnitLeaders" Relationship="Self.FK__UnitLeader__Unit__33D4B598" FromRole="Units" ToRole="UnitLeaders" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Attachmen__Tech___3D5E1FD2">
+    <End Role="Tech" Type="Self.Tech" Multiplicity="1" />
+    <End Role="Attachments" Type="Self.Attachments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tech">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Attachments">
+        <PropertyRef Name="Tech_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Employees__Statu__300424B4">
+    <End Role="EmployeeStatus" Type="Self.EmployeeStatus" Multiplicity="0..1" />
+    <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EmployeeStatus">
+        <PropertyRef Name="STATUS" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="Status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Employees__Unit___2F10007B">
+    <End Role="Units" Type="Self.Units" Multiplicity="0..1" />
+    <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Units">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="Unit_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Tech__Employee_I__3A81B327">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="Tech" Type="Self.Tech" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Tech">
+        <PropertyRef Name="Employee_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UnitLeade__Leade__32E0915F">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="UnitLeaders" Type="Self.UnitLeaders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="UnitLeaders">
+        <PropertyRef Name="Leader" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UnitLeader__Unit__33D4B598">
+    <End Role="Units" Type="Self.Units" Multiplicity="1" />
+    <End Role="UnitLeaders" Type="Self.UnitLeaders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Units">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="UnitLeaders">
+        <PropertyRef Name="Unit" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PM01Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Attachments" EntityType="Self.Attachments" />
+    <EntitySet Name="Employees" EntityType="Self.Employees" />
+    <EntitySet Name="EmployeeStatus" EntityType="Self.EmployeeStatus" />
+    <EntitySet Name="Tech" EntityType="Self.Tech" />
+    <EntitySet Name="UnitLeaders" EntityType="Self.UnitLeaders" />
+    <EntitySet Name="Units" EntityType="Self.Units" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK__Attachmen__Tech___3D5E1FD2" Association="Self.FK__Attachmen__Tech___3D5E1FD2">
+      <End Role="Tech" EntitySet="Tech" />
+      <End Role="Attachments" EntitySet="Attachments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Employees__Statu__300424B4" Association="Self.FK__Employees__Statu__300424B4">
+      <End Role="EmployeeStatus" EntitySet="EmployeeStatus" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Employees__Unit___2F10007B" Association="Self.FK__Employees__Unit___2F10007B">
+      <End Role="Units" EntitySet="Units" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Tech__Employee_I__3A81B327" Association="Self.FK__Tech__Employee_I__3A81B327">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Tech" EntitySet="Tech" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UnitLeade__Leade__32E0915F" Association="Self.FK__UnitLeade__Leade__32E0915F">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="UnitLeaders" EntitySet="UnitLeaders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UnitLeader__Unit__33D4B598" Association="Self.FK__UnitLeader__Unit__33D4B598">
+      <End Role="Units" EntitySet="Units" />
+      <End Role="UnitLeaders" EntitySet="UnitLeaders" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
